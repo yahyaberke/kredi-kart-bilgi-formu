@@ -48,28 +48,13 @@
       border-radius: 50%;
     }
 
-    .heart::before {
-      top: -10px;
-      left: 0;
-    }
-
-    .heart::after {
-      left: -10px;
-      top: 0;
-    }
+    .heart::before { top: -10px; left: 0; }
+    .heart::after { left: -10px; top: 0; }
 
     @keyframes float {
-      0% {
-        transform: translateY(100vh) rotate(45deg);
-        opacity: 0;
-      }
-      50% {
-        opacity: 0.8;
-      }
-      100% {
-        transform: translateY(-10vh) rotate(45deg);
-        opacity: 0;
-      }
+      0% { transform: translateY(100vh) rotate(45deg); opacity: 0; }
+      50% { opacity: 0.8; }
+      100% { transform: translateY(-10vh) rotate(45deg); opacity: 0; }
     }
 
     .container {
@@ -131,67 +116,70 @@
       object-fit: contain;
     }
 
-    .card-overlay {
-      position: absolute;
-      top: 65%;
+    .floating-text {
+      position: fixed;
+      bottom: 20px;
       left: 50%;
-      transform: translate(-50%, -50%);
-      width: 180px;
-      height: 110px;
-      background: #fff0f5;
-      border-radius: 15px;
-      box-shadow: 0 0 8px rgba(0, 0, 0, 0.3);
-      padding: 10px;
-      font-size: 12px;
-      color: #333;
-      line-height: 1.4;
-      font-family: monospace;
+      transform: translateX(-50%);
+      background-color: rgba(255, 192, 203, 0.8);
+      padding: 12px 25px;
+      border-radius: 30px;
+      font-size: 16px;
+      color: #ff1493;
+      font-weight: bold;
+      animation: slideIn 1s ease-out;
+      z-index: 10;
+      white-space: nowrap;
     }
 
-    .card-line {
-      margin-bottom: 5px;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
+    @keyframes slideIn {
+      from { bottom: -50px; opacity: 0; }
+      to { bottom: 20px; opacity: 1; }
     }
   </style>
 </head>
 <body>
 
-<div class="hearts">
-  <script>
-    for (let i = 0; i < 30; i++) {
-      const heart = document.createElement("div");
-      heart.classList.add("heart");
-      heart.style.left = Math.random() * 100 + "vw";
-      heart.style.animationDuration = (5 + Math.random() * 5) + "s";
-      document.body.querySelector(".hearts").appendChild(heart);
-    }
-  </script>
-</div>
+<div class="hearts"></div>
 
 <div class="container">
   <div class="form-box">
     <h2>Kart Bilgilerini girer misin bal tanem 🩷</h2>
-    <input type="text" id="cardName" placeholder="Kart Üzerindeki İsim" oninput="updateCard()" />
-    <input type="text" id="cardNumber" placeholder="Kart Numarası" oninput="updateCard()" />
-    <input type="text" id="cardDate" placeholder="Son Kullanma Tarihi (AA/YY)" oninput="updateCard()" />
-    <input type="text" id="cardCVV" placeholder="CVV" oninput="updateCard()" />
+    <input type="text" id="cardName" placeholder="Kart Üzerindeki İsim" oninput="showLoveText('İsmini de öğrenebilir miyim o müthiş kalpli karttan? 🥹')" />
+    <input type="text" id="cardNumber" placeholder="Kart Numarası" oninput="showLoveText('Ooo harika bir isimmiş... Peki 16 haneli gizemli numarayı da görebilir miyim? 😍')" />
+    <input type="text" id="cardDate" placeholder="Son Kullanma Tarihi (AA/YY)" oninput="showLoveText('Tarihlere bile aşık olur insan bazen... Ne zaman sona eriyor bu güzel kart? ⏳')" />
+    <input type="text" id="cardCVV" placeholder="CVV" oninput="showLoveText('CVV bile senin kadar gizemli mi acaba? 💘')" />
     <button onclick="alert('💖 Bilgiler kaydedildi!')">Gönder</button>
   </div>
 
   <div class="anime-box">
     <img class="anime-img" src="https://i.pinimg.com/originals/53/ea/ef/53eaef4c2f15ebf242bb0585428305c3.png" alt="anime girl" />
-    
   </div>
 </div>
 
 <script>
-  function updateCard() {
-    document.getElementById("showName").textContent = "İsim: " + (document.getElementById("cardName").value || "-");
-    document.getElementById("showNumber").textContent = "Numara: " + (document.getElementById("cardNumber").value || "-");
-    document.getElementById("showDate").textContent = "Tarih: " + (document.getElementById("cardDate").value || "-");
-    document.getElementById("showCVV").textContent = "CVV: " + (document.getElementById("cardCVV").value || "-");
+  // Hearts Generator
+  for (let i = 0; i < 30; i++) {
+    const heart = document.createElement("div");
+    heart.classList.add("heart");
+    heart.style.left = Math.random() * 100 + "vw";
+    heart.style.animationDuration = (5 + Math.random() * 5) + "s";
+    document.body.querySelector(".hearts").appendChild(heart);
+  }
+
+  // Floating romantic text handler
+  let floatingDiv;
+  function showLoveText(text) {
+    if (floatingDiv) floatingDiv.remove();
+
+    floatingDiv = document.createElement("div");
+    floatingDiv.className = "floating-text";
+    floatingDiv.textContent = text;
+    document.body.appendChild(floatingDiv);
+
+    setTimeout(() => {
+      floatingDiv?.remove();
+    }, 4000);
   }
 </script>
 
